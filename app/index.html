@@ -1,18 +1,37 @@
 <!doctype html>
-<html lang="en" ng-app="appName">
+<html lang="en" ng-app="caseHistory">
   <head>
     <meta charset="utf-8">
-    <title>AppTitle</title>
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <title> 病历查询系统</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="app.css" />
+    <link rel="stylesheet" type="text/css" href="bower_components/ng-dialog/css/ngDialog.min.css" />
+    <link rel="stylesheet" type="text/css" href="bower_components/ng-dialog/css/ngDialog-theme-default.css" />
+
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/ngProgress/build/ngProgress.min.js"></script>
+    <link rel="stylesheet" href="bower_components/ngProgress/ngProgress.css">
+
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="app.module.js"></script>
     <script src="app.config.js"></script>
 
-    <script type="text/javascript" src="error-page/error-page.module.js"></script>
-    <script type="text/javascript" src="error-page/error-page.component.js"></script>
-
+    <script src="bower_components/ng-dialog/js/ngDialog.min.js"></script>
+    <script type="text/javascript" src="sessions/sessions.new.module.js"></script>
+    <script type="text/javascript" src="sessions/sessions.new.component.js"></script>
+    <script type="text/javascript" src="patients/patients.index.module.js"></script>
+    <script type="text/javascript" src="patients/patients.index.component.js"></script>
+    <script type="text/javascript" src="patients/patients.show.module.js"></script>
+    <script type="text/javascript" src="patients/patients.show.component.js"></script>
+    <script type="text/javascript" src="examine-result-config/examine-result-config.edit.module.js"></script>
+    <script type="text/javascript" src="examine-result-config/examine-result-config.edit.component.js"></script>
+    <script type="text/javascript" src="examine-target-config/examine-target-config.edit.module.js"></script>
+    <script type="text/javascript" src="examine-target-config/examine-target-config.edit.component.js"></script>
+    <script type="text/javascript" src="sign-display-config/sign-display-config.edit.module.js"></script>
+    <script type="text/javascript" src="sign-display-config/sign-display-config.edit.component.js"></script>
+    <script type="text/javascript" src="sign-examine-partial-config/sign-examine-partial-config.edit.module.js"></script>
+    <script type="text/javascript" src="sign-examine-partial-config/sign-examine-partial-config.edit.component.js"></script>
+    <script type="text/javascript" src="data.js"></script>
   </head>
   <body>
     <div ng-view></div>

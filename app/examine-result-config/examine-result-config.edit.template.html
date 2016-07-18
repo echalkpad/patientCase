@@ -1,0 +1,93 @@
+<div id="examin-result-config" class="container-fluid">
+  <div class="row well">
+    <div class="row">
+      <div class="col-md-2">
+        LIS代码: <input type="text" size="14" ng-model="$ctrl.currentConfig.lisitemCode" />
+      </div>
+      <div class="col-md-2">
+        单位: <input type="text" size="14" ng-model="$ctrl.currentConfig.testUnit" />
+      </div>
+      <div class="col-md-2">
+        检验代码: <input type="text" size="14" ng-model="$ctrl.currentConfig.testitemCode" />
+      </div>
+      <div class="col-md-2">
+        检验名称: <input type="text" size="14" ng-model="$ctrl.currentConfig.testName" />
+      </div>
+      <div class="col-md-2">
+        英文名: <input type="text" size="14" ng-model="$ctrl.currentConfig.testEngName" />
+      </div>
+      <div class="col-md-2">
+        拼音: <input type="text" size="14" ng-model="$ctrl.currentConfig.py1" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        顺序: <input type="text" size="14" ng-model="$ctrl.currentConfig.seq" />  
+      </div>
+      <div class="col-md-2">
+        测量方法: <input type="text" size="14" ng-model="$ctrl.currentConfig.testMethod" />  
+      </div>
+      <div class="col-md-2">
+        趋势显示: <input type="text" size="14" ng-model="$ctrl.currentConfig.isTrend" />
+      </div>
+      <div class="col-md-2">
+        参考上限: <input type="text" size="14" ng-model="$ctrl.currentConfig.normalHigh" />
+      </div>
+      <div class="col-md-2">
+        参考下限: <input type="text" size="14" ng-model="$ctrl.currentConfig.normalLow" />
+      </div>
+      <div class="col-md-2">
+        最小值: <input type="text" size="1" ng-model="$ctrl.currentConfig.maximumValue" />
+        最大值: <input type="text" size="1" ng-model="$ctrl.currentConfig.minimumValue" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 col-md-offset-9">
+        <button class="btn btn-default btn-sm" ng-click="$ctrl.queryConfig($ctrl.currentConfig)">查询</button>
+        <button class="btn btn-default btn-sm" ng-click="$ctrl.saveConfig($ctrl.currentConfig)">保存</button>
+        <button class="btn btn-default btn-sm" ng-click="$ctrl.deleteConfig($ctrl.currentConfig)">删除</button>
+        <button class="btn btn-default btn-sm" ng-click="$ctrl.clearForm()">清空</button>
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <td>LIS代码</td>
+        <td>单位</td>
+        <td>检验代码</td>
+        <td>检验名称</td>
+        <td>英文名</td>
+        <td>拼音</td>
+        <td>顺序</td>
+        <td>测量方法</td>
+        <td>趋势显示</td>
+        <td>参考上限</td>
+        <td>参考下限</td>
+        <td>最大值</td>
+        <td>最小值</td>
+        <td>操作者</td>
+        <td>操作时间</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="configItem in configList" ng-click="$ctrl.configItemShow(configItem)">
+        <td>{{configItem.lisitemCode}}</td>
+        <td>{{configItem.testUnit}}</td>
+        <td>{{configItem.testitemCode}}</td>
+        <td>{{configItem.testName}}</td>
+        <td>{{configItem.testEngName}}</td>
+        <td>{{configItem.py1}}</td>
+        <td>{{configItem.seq}}</td>
+        <td>{{configItem.testMethod}}</td>
+        <td>{{configItem.isTrend}}</td>
+        <td>{{configItem.normalHigh}}</td>
+        <td>{{configItem.normalLow}}</td>
+        <td>{{configItem.maximumValue}}</td>
+        <td>{{configItem.minimumValue}}</td>
+        <td>{{configItem.optUser}}</td>
+        <td>{{configItem.optDate}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

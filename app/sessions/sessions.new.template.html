@@ -1,0 +1,15 @@
+<div id="sessions-new-page" class="container-fluid">
+  <div id="sessions-new" class="row">
+    <div class="col-md-8 col-md-offset-4">
+      <form name="loginForm" ng-submit="$ctrl.login(credentials)" novalidate>
+          <label for="username">Username:</label>
+          <input type="text" id="username" ng-init="credentials.userId='tiis'" ng-model="credentials.userId">
+          <label for="password">Password:</label>
+          <input type="password" id="password" ng-init="credentials.userPassword='ffce'" ng-model="credentials.userPassword">
+          <button type="submit" class="btn btn-default btn-sm">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+<button ng-click="$ctrl.testLogin()">测试登录</button>
+<a href="/#!/patients/index">病人列表</a>

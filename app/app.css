@@ -1,0 +1,114 @@
+.border{
+  border: 1px solid red;
+}
+#sessions-new-page{
+  background-image: url(img/sessions/sessions_bg.png);
+  background-size: cover;
+  height: 700px;
+}
+#sessions-new{
+  margin-top: 250px;
+}
+#patients-index-page{
+  font-size: 12px;
+}
+#patients-index-page #search-bar{
+  background-color: rgb(219, 227, 232);
+  height: 40px;
+}
+#patients-index-page input{
+  border: 1px solid #000;
+}
+#patients-index-page form{
+  margin-top: 10px;
+}
+
+/*--------------------病人详情------------------------*/
+dt a:hover{
+  text-decoration: underline;
+  color: #FF0000;
+}
+dt {
+  border-top: 1px solid #000;
+  color: #000;
+}
+.header-bar{
+  background-color: rgb(75, 159, 236);
+}
+#chart-contianer{
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.color-block{
+  width: 30px;
+  height: 10px;
+  margin-left: 30px;
+  display: inline-block; 
+}
+#emergency-case{
+  background-color: red;
+}
+#enter-hospital{
+  background-color: green;
+}
+#exporter-hospital{
+  background-color: yellow;
+}
+.border{
+  border: 1px solid #f00;
+}
+.gray-bg{
+  background-color: red;
+}
+#time-indicator{
+  display: inline-block;
+  cursor: pointer;
+  margin-bottom: 0;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+.ruler{
+  display: inline-block;
+  width: 140px;
+  margin-top: 0;
+  border-right: 1px solid red;
+}
+.time-indicator-container{
+  background-color: rgb(219, 227, 232);
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+.time-unit{
+  display: inline-block;
+  width: 140px;
+  border-right: 1px solid #f00;
+}
+canvas{
+  vertical-align: bottom
+}
+dl dt{
+  background-color: rgb(220,220,220);
+}
+#time-line-container{
+  display: inline-block;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 1150px;
+  margin: 0;
+  padding: 0;
+}
+#time-line{
+  margin: 0;
+}
+.patient{
+  color: white;
+  margin-right: 30px;
+  margin-left: 30px;
+}
+.btn-group-row{
+  padding-top: 5px;
+}
+.well{
+  padding-bottom: 0;
+}

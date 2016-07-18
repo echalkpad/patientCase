@@ -1,0 +1,104 @@
+<nav class="navbar navbar-default navbar-fixed-top" ng-mousemove="$ctrl.onMouseMove($event)" ng-mouseup="$ctrl.onTimeIndicatorMouseUp($event)">
+  <div class="container-fluid" style="background-color: #fff;">
+    <div class="collapse navbar-collapse">
+      <div class="row header-bar">
+        查询时间段: <input type="text" ng-init="$ctrl.startTime='2012-09-12'" ng-model="$ctrl.startTime" placeholder="例如：20160612" value="20160612">
+        <input type="text" ng-init="$ctrl.endTime='2016-03-12'" ng-model="$ctrl.endTime" placeholder="例如： 20160650" value="20160650">
+        <button id="confirm-button" class="btn btn-default btn-sm" ng-click="$ctrl.onConfirmButtonClicked()">确定</button>
+        <span class="patient">{{timePersent}}</span>
+        <span class="diagnose">{{currentElementCoord}}</span>
+        <span id="mouse-position">{{currentPosition||"鼠标当前的坐标：0, 0"}}</span>
+        <button type="button" class="btn btn-primary btn-sm" ng-click="$ctrl.settingDialog()" >设置</button>
+      </div>
+
+      <div class="row time-indicator-container">
+        <div class="ruler text-center">
+          <input type="checkbox" >标尺
+        </div>
+        <canvas id="time-indicator" width="1100" height="15" ng-mousedown="$ctrl.onTimeIndicatorMouseDown($event)">
+          your browser not support canvas, please upgrade your browser.
+        </canvas>
+      </div>
+
+      <div class="row">
+        <select ng-model="$ctrl.currentTimeUnit" class="time-unit text-center" ng-options="x.value as x.text for x in $ctrl.timeUnit" ng-change="$ctrl.timeUnitChange($ctrl.currentTimeUnit)" >
+        </select>
+        <div id="time-line-container" style="vertical-align: bottom;">
+          <canvas id="time-line-canvas" width="1300" height="25">
+            your browser not support canvas, please upgrade your browser.
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid" style="margin-top: 80px" ng-mousemove="$ctrl.onMouseMove($event)">
+  <div class="row">
+    <dl>
+      <dt id="how-to-search" href="javascript:void(null)">
+        <ul type="square" ng-click="$ctrl.diseaseHistoryToggle()" style="display: inline-block;cursor:pointer">
+          <li>疾病史</li>
+        </ul>
+      </dt>
+      <dd ng-show="$ctrl.diseaseHistoryVisible">
+        <p>检查项目一</p>
+      </dd>
+
+      <dt href="javascript:void(null)">
+        <ul type="square" ng-click="$ctrl.diagnosticInformationToggle()" style="display: inline-block;cursor:pointer">
+          <li>诊断信息</li>
+        </ul>
+      </dt>
+      <dd ng-show="$ctrl.diagnosticInformationVisible">
+        <p>检查项目二数据显示区域。</p>
+      </dd>
+
+      <dt href="javascript:void(null)">
+        <ul type="square" ng-click="$ctrl.surgicalTreatmentToggle()" style="display: inline-block;cursor:pointer">
+          <li>手术治疗</li>
+        </ul>
+      </dt>
+      <dd ng-show="$ctrl.surgicalTreatmentVisible">
+        <p>检查项目三显示区域。</p>
+      </dd>
+
+      <dt href="javascript:void(null)">
+        <ul type="square" ng-click="$ctrl.generalDisposalToggle()" style="display: inline-block;cursor:pointer">
+          <li>一般处置</li>
+        </ul>
+      </dt>
+      <dd ng-show="$ctrl.generalDisposalVisible">
+        <p>检查项目四显示区域。
+        </p>
+      </dd>
+
+      <dt>
+        <div style="display: inline-block">
+          <ul id="save-item" type="square" ng-click="$ctrl.medicationToggle()" style="display: inline-block;cursor:pointer">
+            <li>药物治疗</li>
+          </ul>
+          <input type="radio" name="type" checked="checked" value="1" />药理分类
+          <input type="radio" name="type" value="2" />抗生素分级
+          <div id="emergency-case" class="color-block"></div>急诊
+          <div id="enter-hospital" class="color-block"></div>住院
+          <div id="exporter-hospital" class="color-block"></div>出院带药
+          <button id="start-draw" class="btn btn-primary hidden">开始画图</button>
+        </div>
+      </dt>
+      <dd>
+        <div style="border: 1px solid #000;">
+          <div style="display: inline-block;">
+            <canvas id="medicationTitleCanvas" width="100" height="0" style="display: inline-block;">
+            </canvas>
+          </div>
+
+          <div style="display: inline-block;">
+            <canvas id="mediacationContentCanvas" width="1200" height="0" style="display: inline-block;">
+            </canvas>
+          </div>
+        </div>
+      </dd>
+    </dl>
+  </div>
+</div>
