@@ -225,9 +225,10 @@ angular.
       }
 
       function drawTimeLineIndicator(mousePoint){
-        if(mousePoint&&((mousePoint.x-globalVar.leftTitleWidth)<0||(mousePoint.x>WINDOW_WIDTH-40))){
+        if(mousePoint&&((mousePoint.x-globalVar.leftTitleWidth)<0||(mousePoint.x>WINDOW_WIDTH-20))){
           return;
         }
+
         var timeIndicatorContextWidth = WINDOW_WIDTH - globalVar.leftTitleWidth;
         var timeIndicatorContext = document.getElementById('time-indicator').getContext('2d');
         timeIndicatorContext.canvas.width = timeIndicatorContextWidth;
@@ -321,7 +322,7 @@ angular.
         var offsetLineBar = getOffsetLineBar();
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
         var perLineHeight = options.perLineHeight||30;
-        var itemLineLength = (WINDOW_WIDTH-globalVar.leftTitleWidth);
+        var itemLineLength = (WINDOW_WIDTH-globalVar.leftTitleWidth-20);
 
         canvasContext.canvas.height = options.totalItem*perLineHeight;
         canvasContext.canvas.width = itemLineLength;
@@ -338,13 +339,6 @@ angular.
         var totalVerticalLine = parseInt(itemLineLength/globalVar.horizontalDistance);
         var horizontalDistance = globalVar.horizontalDistance;
         var lineHeight = options.totalItem*perLineHeight;
-        for (var i = 0; i < totalVerticalLine; i++) {
-          canvasContext.beginPath();
-          canvasContext.strokeStyle = "#000";
-          canvasContext.moveTo(options.startPosition+horizontalDistance*i, 0);
-          canvasContext.lineTo(options.startPosition+horizontalDistance*i, lineHeight);
-          canvasContext.stroke();
-        }
 
         var startTime,
           startTimeMillisecond,
@@ -474,7 +468,7 @@ angular.
       }
 
       function getTotalTimeLine(){
-        return parseInt((WINDOW_WIDTH - globalVar.leftTitleWidth)/globalVar.horizontalDistance);
+        return parseInt((WINDOW_WIDTH - globalVar.leftTitleWidth)/globalVar.horizontalDistance)+1;
       }
 
       function drawTimeLine(options){
@@ -489,12 +483,24 @@ angular.
         var startPosition = globalVar.horizontalDistance*offsetLineBar - getOffsetPosition();
 
         var totalTimeLine = getTotalTimeLine();
+
+        totalTimeLine += 1;
+        var timeLineBgCanvas = document.getElementById("time-line-canvas-bg").getContext('2d');
+        timeLineBgCanvas.canvas.width = (WINDOW_WIDTH-30);
+        timeLineBgCanvas.clearRect(0, 0, WINDOW_WIDTH-30, 1000);
+
         for (var i = 0; i < totalTimeLine; i++) {
           canvasContext.beginPath();
           canvasContext.strokeStyle = options.lineColor||'#000';
           canvasContext.moveTo(startPosition+i*globalVar.horizontalDistance, 0);
           canvasContext.lineTo(startPosition+i*globalVar.horizontalDistance, 15);
           canvasContext.stroke();
+
+          timeLineBgCanvas.beginPath();
+          timeLineBgCanvas.strokeStyle = options.lineColor||'#1E6161';
+          timeLineBgCanvas.moveTo(144+startPosition+globalVar.horizontalDistance*i, 0);
+          timeLineBgCanvas.lineTo(144+startPosition+globalVar.horizontalDistance*i, 900);
+          timeLineBgCanvas.stroke();
         }
         var hashOptions = {
           totalLineBar: totalLineBar,

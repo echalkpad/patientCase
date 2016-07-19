@@ -12,6 +12,18 @@ var mainApp = angular.module('caseHistory', [
   'signExaminPartialConfigEdit'
 ]);
 
+mainApp.directive('autoHeight', function($window){
+  return {
+    restrict: 'A',
+    scope: {},
+    link: function($scope, element, attrs){
+      var winowHeight = $window.innerHeight;
+      var headerHeight = 85;
+      element.css('height', (winowHeight-headerHeight) + 'px');
+    }
+  };
+});
+
 mainApp.factory('AuthService', function ($http, Session) {
   var authService = {};
 
