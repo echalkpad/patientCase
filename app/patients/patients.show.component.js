@@ -26,7 +26,9 @@ angular.
         timeOffsetPercentage: 0,
         startTime: '',
         endTime: '',
-        timeUnit: 'month'
+        timeUnit: 'month',
+        showRuler: self.showRuler,
+        startPosition: ''
       };
       self.timeUnit = [{
         text: '月',
@@ -86,14 +88,6 @@ angular.
       }
       self.diseaseHistoryToggle = function(){
         self.diseaseHistoryVisible = !self.diseaseHistoryVisible;
-      }
-
-      self.rulerChange = function(showRuler){
-        if (showRuler){
-
-        }else{
-
-        }
       }
 
       function getCrossBrowserElement(mouseEvent){
@@ -156,10 +150,14 @@ angular.
 
       self.onMouseMove = function(event){
         getMouseEventResult(event, "Mouse move");
-        if (globalVar.startTime&&self.timeIndicatorMoveing) {
-          drawTimeLineIndicator(getCrossBrowserElement(event));
+        var currentElement = getCrossBrowserElement(event);
+        if (self.showRuler&&144<currentElement.x) {
+          showTimeRuler(currentElement);
         }
-        isSpecialElement(getCrossBrowserElement(event));
+        if (globalVar.startTime&&self.timeIndicatorMoveing) {
+          drawTimeLineIndicator(currentElement);
+        }
+        isSpecialElement(currentElement);
       }
 
       self.onTimeIndicatorMouseDown = function(event){
@@ -196,6 +194,18 @@ angular.
         //暂时硬编码数据
         onLoadMedicationsSuccess(data);
         //$http.get('http://192.168.0.14:8080/chsp/medications', config).then(onLoadMedicationsSuccess, onLoadMedicationsFailure);
+      }
+
+      function showTimeRuler(element){
+        var elementx = element.x;
+        drawTimeLineBg();
+
+        var canvasContext = document.getElementById('time-line-canvas-bg').getContext('2d');
+        canvasContext.beginPath();
+        canvasContext.strokeStyle = "#f00";
+        canvasContext.moveTo(element.x, 0);
+        canvasContext.lineTo(element.x, 600);
+        canvasContext.stroke();
       }
 
       function onLoadMedicationsSuccess(event){
@@ -487,6 +497,21 @@ angular.
         return parseInt((WINDOW_WIDTH - globalVar.leftTitleWidth)/globalVar.horizontalDistance)+1;
       }
 
+      function drawTimeLineBg(){
+        var totalTimeLine = getTotalTimeLine();
+        var timeLineBgCanvas = document.getElementById("time-line-canvas-bg").getContext('2d');
+        timeLineBgCanvas.canvas.width = (WINDOW_WIDTH-30);
+        timeLineBgCanvas.clearRect(0, 0, WINDOW_WIDTH-30, 1000);
+
+        for (var i = 0; i < totalTimeLine; i++) {
+          timeLineBgCanvas.beginPath();
+          timeLineBgCanvas.strokeStyle = '#D1D1D1';
+          timeLineBgCanvas.moveTo(144+globalVar.startPosition+globalVar.horizontalDistance*i, 0);
+          timeLineBgCanvas.lineTo(144+globalVar.startPosition+globalVar.horizontalDistance*i, 900);
+          timeLineBgCanvas.stroke();
+        }
+      }
+
       function drawTimeLine(options){
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
         var canvasLength = WINDOW_WIDTH - globalVar.leftTitleWidth;
@@ -497,27 +522,20 @@ angular.
         var offsetLineBar = getOffsetLineBar();
 
         var startPosition = globalVar.horizontalDistance*offsetLineBar - getOffsetPosition();
-
+        globalVar.startPosition = startPosition;
         var totalTimeLine = getTotalTimeLine();
 
         totalTimeLine += 1;
-        var timeLineBgCanvas = document.getElementById("time-line-canvas-bg").getContext('2d');
-        timeLineBgCanvas.canvas.width = (WINDOW_WIDTH-30);
-        timeLineBgCanvas.clearRect(0, 0, WINDOW_WIDTH-30, 1000);
-
         for (var i = 0; i < totalTimeLine; i++) {
           canvasContext.beginPath();
           canvasContext.strokeStyle = options.lineColor||'#D1D1D1';
           canvasContext.moveTo(startPosition+i*globalVar.horizontalDistance, 0);
           canvasContext.lineTo(startPosition+i*globalVar.horizontalDistance, 15);
           canvasContext.stroke();
-
-          timeLineBgCanvas.beginPath();
-          timeLineBgCanvas.strokeStyle = options.lineColor||'#D1D1D1';
-          timeLineBgCanvas.moveTo(144+startPosition+globalVar.horizontalDistance*i, 0);
-          timeLineBgCanvas.lineTo(144+startPosition+globalVar.horizontalDistance*i, 900);
-          timeLineBgCanvas.stroke();
         }
+
+        drawTimeLineBg();
+
         var hashOptions = {
           totalLineBar: totalLineBar,
           totalTimeLine: totalTimeLine,
