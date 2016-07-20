@@ -80,6 +80,22 @@ angular.
         self.diseaseHistoryVisible = !self.diseaseHistoryVisible;
       }
 
+      self.rulerChange = function(showRuler){
+        if (showRuler){
+          // showRuler();
+        }else{
+          // hideRuler();
+        }
+      }
+
+      // function showRuler(){
+      //   log("--------------show ruler");
+      // }
+
+      // function hideRuler(){
+      //   log("--------------hide ruler");
+      // }
+
       function getCrossBrowserElement(mouseEvent){
         var result = {
           x: 0,
@@ -418,7 +434,7 @@ angular.
           canvasContext.stroke();
 
           canvasContext.beginPath();
-          canvasContext.strokeStyle = '#f00';
+          canvasContext.strokeStyle = '#D1D1D1';
           canvasContext.lineWidth = 2;
           canvasContext.moveTo(itemLineLength, perLineHeight*i);
           canvasContext.lineTo(itemLineLength, perLineHeight*(i+1)-3);
@@ -491,13 +507,13 @@ angular.
 
         for (var i = 0; i < totalTimeLine; i++) {
           canvasContext.beginPath();
-          canvasContext.strokeStyle = options.lineColor||'#000';
+          canvasContext.strokeStyle = options.lineColor||'#D1D1D1';
           canvasContext.moveTo(startPosition+i*globalVar.horizontalDistance, 0);
           canvasContext.lineTo(startPosition+i*globalVar.horizontalDistance, 15);
           canvasContext.stroke();
 
           timeLineBgCanvas.beginPath();
-          timeLineBgCanvas.strokeStyle = options.lineColor||'#1E6161';
+          timeLineBgCanvas.strokeStyle = options.lineColor||'#D1D1D1';
           timeLineBgCanvas.moveTo(144+startPosition+globalVar.horizontalDistance*i, 0);
           timeLineBgCanvas.lineTo(144+startPosition+globalVar.horizontalDistance*i, 900);
           timeLineBgCanvas.stroke();
