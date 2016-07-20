@@ -1,4 +1,4 @@
-var vistalSign = {
+var vitalSign = {
   function1: function(){
     console.info("--------function1");
   },
