@@ -82,7 +82,7 @@ angular.
 
       self.rulerChange = function(showRuler){
         if (showRuler){
-          lifeSign.initialize();
+
         }else{
 
         }
@@ -527,6 +527,15 @@ angular.
         }
         updateContentCanvas({
           startPosition: startPosition
+        });
+        //绘生命体征部分
+        vitalSign.initialize({
+          startTime: globalVar.startTime,
+          endTime: globalVar.endTime,
+          timeUnit: globalVar.timeUnit,
+          horizontalDistance: globalVar.horizontalDistance,
+          timeOffsetPercentage: globalVar.timeOffsetPercentage,
+          leftTitleWidth: globalVar.leftTitleWidth
         });
       }
 

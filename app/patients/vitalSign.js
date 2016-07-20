@@ -3,7 +3,7 @@ var vitalSign = {
     console.info("--------function1");
   },
 
-  initialize: function(){
-    console.info("-----------initialize");
+  initialize: function(options){
+    console.info("-----------initialize options: "+JSON.stringify(options));
   }
 }
