@@ -13,6 +13,8 @@ angular.
       self.surgicalTreatmentVisible = false;
       self.diagnosticInformationVisible = false;
       self.diseaseHistoryVisible = false;
+      self.vitalSignVisible = false;
+      self.laboratoryVisible = false;
 
       var medicationsCollection = null;
       var medicationsList = {};
@@ -64,7 +66,7 @@ angular.
       self.medicationToggle = function(){
         self.medicationVisible = !self.medicationVisible;
       }
-      
+
       self.generalDisposalToggle = function(){
         self.generalDisposalVisible = !self.generalDisposalVisible;
       }
@@ -73,6 +75,12 @@ angular.
         self.surgicalTreatmentVisible = !self.surgicalTreatmentVisible;
       }
 
+      self.vitalSignToggle = function(){
+        self.vitalSignVisible = !self.vitalSignVisible;
+      }
+      self.laboratoryToggle = function(){
+        self.laboratoryVisible = !self.laboratoryVisible;
+      }
       self.diagnosticInformationToggle = function(){
         self.diagnosticInformationVisible = !self.diagnosticInformationVisible;
       }
@@ -447,10 +455,10 @@ angular.
           totalLineBar = getTotalMonth(globalVar.startTime, globalVar.endTime);
         }
         if ('day'==globalVar.timeUnit) {
-          totalLineBar = getTotalDay(globalVar.startTime, globalVar.endTime); 
+          totalLineBar = getTotalDay(globalVar.startTime, globalVar.endTime);
         }
         if ('hour'==globalVar.timeUnit) {
-          totalLineBar = getTotalHour(globalVar.startTime, globalVar.endTime); 
+          totalLineBar = getTotalHour(globalVar.startTime, globalVar.endTime);
         }
         return totalLineBar;
       }
@@ -612,7 +620,7 @@ angular.
 
       function drawTimeLineByDay(options){
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
-        
+
         var offsetLineBar = getOffsetLineBar();
         var startPosition = globalVar.horizontalDistance*offsetLineBar - getOffsetPosition();
         var startTime = addDate(globalVar.startTime, offsetLineBar),
