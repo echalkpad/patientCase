@@ -172,9 +172,7 @@ angular.
         globalVar.timeUnit = timeUnit;
         globalVar.timeOffsetPercentage = 0;
         drawTimeLineIndicator();
-        drawTimeLine({
-          canvasContext: 'time-line-canvas'
-        });
+        startDraw();
       }
 
       self.onConfirmButtonClicked = function(){
@@ -206,6 +204,17 @@ angular.
         canvasContext.moveTo(element.x, 0);
         canvasContext.lineTo(element.x, 600);
         canvasContext.stroke();
+
+        drawTimeLine({
+          canvasContext: 'time-line-canvas'
+        });
+
+        var timeLineCanvasContext = document.getElementById('time-line-canvas').getContext('2d');
+        timeLineCanvasContext.beginPath();
+        timeLineCanvasContext.strokeStyle = "#f00";
+        timeLineCanvasContext.moveTo(element.x-144, 0);
+        timeLineCanvasContext.lineTo(element.x-144, 20);
+        timeLineCanvasContext.stroke();
       }
 
       function onLoadMedicationsSuccess(event){
@@ -220,9 +229,7 @@ angular.
           self.currentTimeUnit=self.timeUnit[2].value;
         }
         globalVar.timeOffsetPercentage = 0;
-        drawTimeLine({
-          canvasContext: 'time-line-canvas'
-        });
+        startDraw();
       }
 
       function onLoadMedicationsFailure(event){
@@ -279,13 +286,18 @@ angular.
           $scope.timePersent = "进度比例为："+timeOffsetPercentage;
           globalVar.timeOffsetPercentage = timeOffsetPercentage;
           timeIndicatorContext.fillRect((mousePoint.x-globalVar.leftTitleWidth), 0, 30, 20);
-
-          drawTimeLine({
-            canvasContext: 'time-line-canvas'
-          });
+          startDraw();
         }else{
           timeIndicatorContext.fillRect(0,0,30,20);
         }
+      }
+
+      function startDraw(){
+        drawTimeLine({
+          canvasContext: 'time-line-canvas'
+        });
+        drawTimeLineBg();
+        drawContent();
       }
 
       function getTotalMonth(startTime, endTime){
@@ -518,7 +530,7 @@ angular.
         canvasContext.clearRect(0, 0, canvasLength, 20);
         canvasContext.canvas.width = canvasLength;
         var totalLineBar = getTotalLineBar();
-        var timeLineLength = getTimeLineLength();
+
         var offsetLineBar = getOffsetLineBar();
 
         var startPosition = globalVar.horizontalDistance*offsetLineBar - getOffsetPosition();
@@ -533,8 +545,6 @@ angular.
           canvasContext.lineTo(startPosition+i*globalVar.horizontalDistance, 15);
           canvasContext.stroke();
         }
-
-        drawTimeLineBg();
 
         var hashOptions = {
           totalLineBar: totalLineBar,
@@ -551,8 +561,11 @@ angular.
         if ('hour'==globalVar.timeUnit) {
           drawTimeLineByHour(hashOptions);
         }
+      }
+
+      function drawContent(){
         updateContentCanvas({
-          startPosition: startPosition
+          startPosition: globalVar.startPosition
         });
         //绘生命体征部分
         vitalSign.initialize({
