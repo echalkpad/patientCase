@@ -82,19 +82,11 @@ angular.
 
       self.rulerChange = function(showRuler){
         if (showRuler){
-          // showRuler();
+          lifeSign.initialize();
         }else{
-          // hideRuler();
+
         }
       }
-
-      // function showRuler(){
-      //   log("--------------show ruler");
-      // }
-
-      // function hideRuler(){
-      //   log("--------------hide ruler");
-      // }
 
       function getCrossBrowserElement(mouseEvent){
         var result = {
