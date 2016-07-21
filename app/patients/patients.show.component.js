@@ -176,8 +176,8 @@ angular.
       }
 
       self.onConfirmButtonClicked = function(){
-        globalVar.startTime = self.startTime;
-        globalVar.endTime = self.endTime;
+        globalVar.startTime = self.startTime.split('-')[0]+'-'+self.startTime.split('-')[1]+'-'+1;
+        globalVar.endTime = self.endTime.split('-')[0]+'-'+self.endTime.split('-')[1]+'-'+1;
         $scope.progressbar.start();
         var config = {
           params: {
@@ -228,6 +228,11 @@ angular.
         if (maxLineBar>getTotalDay(self.startTime, self.endTime)){
           self.currentTimeUnit=self.timeUnit[2].value;
         }
+        if (self.currentTimeUnit!=self.timeUnit[0].value) {
+          globalVar.startTime = self.startTime;
+          globalVar.endTime = self.endTime;
+        }
+
         globalVar.timeOffsetPercentage = 0;
         startDraw();
       }
@@ -382,9 +387,14 @@ angular.
           startTimeMillisecond,
           endTimeMillisecond;
 
-        //暂时以一个月三十天进行计算
         if ("month"== globalVar.timeUnit){
-          startTimeMillisecond = (new Date(globalVar.startTime)).getTime()+offsetLineBar*30*24*3600*1000;
+          var newYear = parseInt(globalVar.startTime.split('-')[0])+parseInt((parseInt(globalVar.startTime.split('-')[1])+offsetLineBar)/12);
+          var newMonth = parseInt((parseInt(globalVar.startTime.split('-')[1])+offsetLineBar)%12)+1;
+          var canvasStartTime = newYear+'-'+newMonth+'-'+1;
+
+          startTimeMillisecond = (new Date(canvasStartTime)).getTime();
+
+          //startTimeMillisecond = (new Date(globalVar.startTime)).getTime()+offsetLineBar*30*24*3600*1000;
           endTimeMillisecond = (new Date(globalVar.startTime)).getTime()+(totalVerticalLine+offsetLineBar)*30*24*3600*1000;
         }
         if ("day"==globalVar.timeUnit){
@@ -627,18 +637,19 @@ angular.
             endDay = parseInt(endTime[2]);
 
         var offsetLineBar = getOffsetLineBar();
-        startYear = startYear + parseInt((startMonth+offsetLineBar)/12);
+        startYear = startYear + parseInt((startMonth+offsetLineBar-1)/12);
         startMonth =parseInt((startMonth+offsetLineBar)%12);
-
-        startMonth -= 1;
-
+        var firstYear = startYear;
         for (var i = 0; i < options.totalTimeLine; i++) {
           var currentTime = "";
           var currentYear = startYear+parseInt((startMonth+i)/12);
-          var currentMonth = (parseInt((startMonth+i)%12)+1)<10 ? '0'+(parseInt((startMonth+i)%12)+1) : (parseInt((startMonth+i)%12)+1);
-
+          if ((currentYear==firstYear)&&(i!=0)) {
+            currentYear += 1;
+          }
+          var currentMonth = (parseInt((startMonth+i)%12))<10 ? '0'+(parseInt((startMonth+i)%12)) : (parseInt((startMonth+i)%12));
+          currentMonth = parseInt(currentMonth)==0 ? 12 : currentMonth;
           currentTime = currentMonth+'月';
-          ((parseInt((startMonth+i)%12)+1)==1)&&(currentTime = currentYear+'年'+currentMonth+'月');
+          ((parseInt((startMonth+i)%12))==1)&&(currentTime = currentYear+'年'+currentMonth+'月');
           (0==i)&&(currentTime = currentYear+'年');
 
           canvasContext.textAlign="start";
