@@ -389,13 +389,14 @@ angular.
 
         if ("month"== globalVar.timeUnit){
           var newYear = parseInt(globalVar.startTime.split('-')[0])+parseInt((parseInt(globalVar.startTime.split('-')[1])+offsetLineBar)/12);
-          var newMonth = parseInt((parseInt(globalVar.startTime.split('-')[1])+offsetLineBar)%12)+1;
+          var newMonth = parseInt((parseInt(globalVar.startTime.split('-')[1])+offsetLineBar)%12);
+          newMonth = newMonth==0 ? 12 : newMonth;
           var canvasStartTime = newYear+'-'+newMonth+'-'+1;
-
           startTimeMillisecond = (new Date(canvasStartTime)).getTime();
 
-          //startTimeMillisecond = (new Date(globalVar.startTime)).getTime()+offsetLineBar*30*24*3600*1000;
-          endTimeMillisecond = (new Date(globalVar.startTime)).getTime()+(totalVerticalLine+offsetLineBar)*30*24*3600*1000;
+          var moreTime = ((new Date(globalVar.endTime)) - (new Date(globalVar.startTime)))*(globalVar.startPosition)/(differMonth(globalVar.startTime, globalVar.endTime)*globalVar.horizontalDistance);
+          startTimeMillisecond -= moreTime;
+          endTimeMillisecond = (new Date(canvasStartTime)).getTime()+((new Date(globalVar.endTime))-(new Date(globalVar.startTime)))*(WINDOW_WIDTH-globalVar.leftTitleWidth)/(differMonth(globalVar.startTime, globalVar.endTime)*globalVar.horizontalDistance);
         }
         if ("day"==globalVar.timeUnit){
           startTime = addDate(globalVar.startTime, offsetLineBar);
@@ -717,8 +718,6 @@ angular.
           0!=currentHour&&(currentTime = currentHour+"时");
           0==currentHour&&(currentTime = currentDay+"日"+currentHour+"时");
           0==i&&(currentTime = currentYear+"年"+currentMonth+"月"+currentDay+"日"+currentHour+"时");
-          //currentTime = currentHour+"时";
-          //log("---------currentTime: "+currentYear+"年"+currentMonth+"月"+currentDay+"日"+currentTime);
 
           canvasContext.textAlign="start";
           if(0==i){
