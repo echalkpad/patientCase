@@ -40,7 +40,7 @@
         your browser not support canvas, please upgrade your browser.
       </canvas>
     </div>
-    <dl style="position: absolute; left: 0; right: 0;">
+    <dl style="position: absolute; left: 0; right: 0; border: 1px solid #00f;">
       <dt id="how-to-search" href="javascript:void(null)">
         <ul type="square" ng-click="$ctrl.diseaseHistoryToggle()" style="display: inline-block;cursor:pointer">
           <li>疾病史</li>
@@ -112,13 +112,11 @@
       <dd>
         <div style="height: 300px; overflow: auto;">
           <div style="display: inline-block;">
-            <canvas id="medicationTitleCanvas" width="100" height="0" style="display: inline-block;">
-            </canvas>
+            <canvas id="medicationTitleCanvas" width="100" height="0"></canvas>
           </div>
 
           <div style="display: inline-block;">
-            <canvas id="mediacationContentCanvas" width="1200" height="0">
-            </canvas>
+            <canvas id="mediacationContentCanvas" width="1200" height="0"></canvas>
           </div>
         </div>
       </dd>

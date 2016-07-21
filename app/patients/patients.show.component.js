@@ -397,7 +397,7 @@ angular.
           endTimeMillisecond = (new Date(globalVar.startTime)).getTime()+(totalVerticalLine+offsetLineBar)*3600*1000;
         }
 
-        var contentLength = WINDOW_WIDTH-globalVar.leftTitleWidth-options.startPosition;
+        var contentLength = WINDOW_WIDTH-globalVar.leftTitleWidth-globalVar.startPosition;
         for (var i = 0; i < medicationsCollection.length; i++) {
           for (var j = 0; j < medicationsCollection[i].drugs.length; j++) {
             var m = 1;
@@ -473,6 +473,7 @@ angular.
 
       function getTotalLineBar(){
         var totalLineBar = 0;
+
         if ('month'==globalVar.timeUnit) {
           totalLineBar = getTotalMonth(globalVar.startTime, globalVar.endTime);
         }
@@ -482,26 +483,30 @@ angular.
         if ('hour'==globalVar.timeUnit) {
           totalLineBar = getTotalHour(globalVar.startTime, globalVar.endTime);
         }
-        return totalLineBar;
+
+        return totalLineBar+1;
       }
 
       function getTimeLineLength(){
         return (getTotalLineBar()-1)*globalVar.horizontalDistance;
       }
+
       function contentCanvasLength(){
         return (WINDOW_WIDTH - globalVar.leftTitleWidth);
       }
 
       function getOffsetLineBar(){
         var offsetLineBar = 0;
-        var offsetPosition = getOffsetPosition();
-        while((offsetPosition-(globalVar.horizontalDistance*offsetLineBar))>0){
+        var offsetDistance = getOffsetDistance();
+
+        while((offsetDistance-(globalVar.horizontalDistance*offsetLineBar))>0){
           offsetLineBar++;
         }
+
         return offsetLineBar;
       }
 
-      function getOffsetPosition(){
+      function getOffsetDistance(){
         return (getTimeLineLength() - contentCanvasLength())*globalVar.timeOffsetPercentage;
       }
 
@@ -529,15 +534,14 @@ angular.
         var canvasLength = WINDOW_WIDTH - globalVar.leftTitleWidth;
         canvasContext.clearRect(0, 0, canvasLength, 20);
         canvasContext.canvas.width = canvasLength;
+
         var totalLineBar = getTotalLineBar();
-
         var offsetLineBar = getOffsetLineBar();
-
-        var startPosition = globalVar.horizontalDistance*offsetLineBar - getOffsetPosition();
-        globalVar.startPosition = startPosition;
         var totalTimeLine = getTotalTimeLine();
 
-        totalTimeLine += 1;
+        var startPosition = globalVar.horizontalDistance*offsetLineBar - getOffsetDistance();
+        globalVar.startPosition = startPosition;
+
         for (var i = 0; i < totalTimeLine; i++) {
           canvasContext.beginPath();
           canvasContext.strokeStyle = options.lineColor||'#D1D1D1';
@@ -564,10 +568,9 @@ angular.
       }
 
       function drawContent(){
-        updateContentCanvas({
-          startPosition: globalVar.startPosition
-        });
+        updateContentCanvas();
         //绘生命体征部分
+        return;
         vitalSign.initialize({
           startTime: globalVar.startTime,
           endTime: globalVar.endTime,
@@ -606,7 +609,6 @@ angular.
           canvasContext: 'mediacationContentCanvas',
           perLineHeight: 40,
           totalItem: drugCollection.length,
-          startPosition: options.startPosition,
           drugCollection: drugCollection,
           medicationsCollection: medicationsCollection
         });
@@ -623,11 +625,11 @@ angular.
             endYear = parseInt(endTime[0]),
             endMonth = parseInt(endTime[1]),
             endDay = parseInt(endTime[2]);
-        var offsetLineBar = getOffsetLineBar();
-        var startPosition = globalVar.horizontalDistance*offsetLineBar - getOffsetPosition();
 
+        var offsetLineBar = getOffsetLineBar();
         startYear = startYear + parseInt((startMonth+offsetLineBar)/12);
         startMonth =parseInt((startMonth+offsetLineBar)%12);
+
         startMonth -= 1;
 
         for (var i = 0; i < options.totalTimeLine; i++) {
@@ -642,9 +644,9 @@ angular.
           canvasContext.textAlign="start";
 
           if(0==i){
-            canvasContext.fillText(currentTime, startPosition+i*globalVar.horizontalDistance, 24);
+            canvasContext.fillText(currentTime, globalVar.startPosition+i*globalVar.horizontalDistance, 24);
           }else{
-            canvasContext.fillText(currentTime, startPosition+i*globalVar.horizontalDistance-10, 24);
+            canvasContext.fillText(currentTime, globalVar.startPosition+i*globalVar.horizontalDistance-10, 24);
           }
         }
       }
@@ -653,7 +655,6 @@ angular.
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
 
         var offsetLineBar = getOffsetLineBar();
-        var startPosition = globalVar.horizontalDistance*offsetLineBar - getOffsetPosition();
         var startTime = addDate(globalVar.startTime, offsetLineBar),
             startYear = parseInt(startTime[0]),
             startMonth = parseInt(startTime[1]),
@@ -674,9 +675,9 @@ angular.
 
           canvasContext.textAlign="start";
           if(0==i){
-            canvasContext.fillText(currentTime, startPosition+i*globalVar.horizontalDistance-30, 24);
+            canvasContext.fillText(currentTime, globalVar.startPosition+i*globalVar.horizontalDistance-30, 24);
           }else{
-            canvasContext.fillText(currentTime, startPosition+i*globalVar.horizontalDistance-10, 24);
+            canvasContext.fillText(currentTime, globalVar.startPosition+i*globalVar.horizontalDistance-10, 24);
           }
         }
       }
@@ -684,7 +685,6 @@ angular.
       function drawTimeLineByHour(options){
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
         var offsetLineBar = getOffsetLineBar();
-        var startPosition = globalVar.horizontalDistance*offsetLineBar - getOffsetPosition();
 
         var startTime = addDate(globalVar.startTime, parseInt(offsetLineBar/24)),
             startYear = parseInt(startTime[0]),
@@ -711,9 +711,9 @@ angular.
 
           canvasContext.textAlign="start";
           if(0==i){
-            canvasContext.fillText(currentTime, startPosition+i*globalVar.horizontalDistance-40, 24);
+            canvasContext.fillText(currentTime, globalVar.startPosition+i*globalVar.horizontalDistance-40, 24);
           }else{
-            canvasContext.fillText(currentTime, startPosition+i*globalVar.horizontalDistance-10, 24);
+            canvasContext.fillText(currentTime, globalVar.startPosition+i*globalVar.horizontalDistance-10, 24);
           }
         }
       }
