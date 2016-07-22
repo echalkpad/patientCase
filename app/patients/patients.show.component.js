@@ -41,7 +41,7 @@ angular.
         value: 'hour'
       }];
       self.currentTimeUnit=self.timeUnit[0].value;
-
+      // 弹出对话框
       self.settingDialog = function () {
         ngDialog.open({
             template: `<p><a href="/#!/examine-result-config" ng-click="$ctrl.closeThisDialog()">检验结果展现配置</a></p>
@@ -57,39 +57,52 @@ angular.
         });
       };
 
+      // 关闭对话框
       self.closeThisDialog = function(){
         ngDialog.close();
       }
 
+      // 展开疾病史
       self.expandDiseaseHistory = function(){
         console.info("run expand disease history hello");
       }
-
+      
+      // 展开药物治疗
       self.medicationToggle = function(){
         self.medicationVisible = !self.medicationVisible;
       }
 
+      // 展开一般处置
       self.generalDisposalToggle = function(){
         self.generalDisposalVisible = !self.generalDisposalVisible;
       }
 
+      // 手术治疗
       self.surgicalTreatmentToggle = function(){
         self.surgicalTreatmentVisible = !self.surgicalTreatmentVisible;
       }
 
+      // 体征
       self.vitalSignToggle = function(){
         self.vitalSignVisible = !self.vitalSignVisible;
       }
+
+      // 检验报告
       self.laboratoryToggle = function(){
         self.laboratoryVisible = !self.laboratoryVisible;
       }
+
+      // 诊断信息
       self.diagnosticInformationToggle = function(){
         self.diagnosticInformationVisible = !self.diagnosticInformationVisible;
       }
+
+      // 疾病史
       self.diseaseHistoryToggle = function(){
         self.diseaseHistoryVisible = !self.diseaseHistoryVisible;
       }
-
+      
+      // 获取当前dom元素
       function getCrossBrowserElement(mouseEvent){
         var result = {
           x: 0,
@@ -140,7 +153,8 @@ angular.
 
         return result;
       }
-
+      
+      // 输出当前dom元素的坐标信息
       function getMouseEventResult(mouseEvent, mouseEventDesc)
       {
         var coords = getCrossBrowserElement(mouseEvent);
@@ -148,6 +162,7 @@ angular.
         $scope.currentElementCoord = "当前坐标为("+coords.relativeX+"，"+coords.relativeY+")";
       }
 
+      // 鼠标移动处理事件
       self.onMouseMove = function(event){
         getMouseEventResult(event, "Mouse move");
         var currentElement = getCrossBrowserElement(event);
@@ -159,15 +174,18 @@ angular.
         }
         isSpecialElement(currentElement);
       }
-
+      
+      // 鼠标按下事件， 将可滑动设置为true
       self.onTimeIndicatorMouseDown = function(event){
         self.timeIndicatorMoveing = true;
       }
 
+      // 鼠标松开时间，将可滑动设置为false
       self.onTimeIndicatorMouseUp = function(event){
         self.timeIndicatorMoveing = false;
       }
 
+      // 当时间单位改变事件， 当时间单位改变时进行画布重绘
       self.timeUnitChange = function(timeUnit){
         globalVar.timeUnit = timeUnit;
         globalVar.timeOffsetPercentage = 0;
@@ -175,6 +193,7 @@ angular.
         startDraw();
       }
 
+      // 确定按钮被按下的处理操作
       self.onConfirmButtonClicked = function(){
         globalVar.startTime = self.startTime.split('-')[0]+'-'+self.startTime.split('-')[1]+'-'+1;
         globalVar.endTime = self.endTime.split('-')[0]+'-'+self.endTime.split('-')[1]+'-'+1;
@@ -194,6 +213,7 @@ angular.
         //$http.get('http://192.168.0.14:8080/chsp/medications', config).then(onLoadMedicationsSuccess, onLoadMedicationsFailure);
       }
 
+      // 画标尺
       function showTimeRuler(element){
         var elementx = element.x;
         drawTimeLineBg();
@@ -217,6 +237,7 @@ angular.
         timeLineCanvasContext.stroke();
       }
 
+      // 当药物治疗的数据获取成功后的回到函数
       function onLoadMedicationsSuccess(event){
         $scope.progressbar.complete();
         medicationsCollection = event.data;
@@ -236,16 +257,19 @@ angular.
         globalVar.timeOffsetPercentage = 0;
         startDraw();
       }
-
+      
+      // 获取药物治疗失败回调函数
       function onLoadMedicationsFailure(event){
         $scope.progressbar.complete();
         alert("-----error: "+JSON.stringify(event));
       }
-
+      
+      //打印日志函数 
       function log(message){
         console.info(message);
       }
 
+      // 处理特殊点
       function isSpecialElement(element){
         if ('mediacationContentCanvas'==element.currentDomId) {
           var timeLineLength = getTotalDay(globalVar.startTime, globalVar.endTime)*globalVar.horizontalDistance;
@@ -262,6 +286,7 @@ angular.
         }
       }
 
+      // 画时间滑块
       function drawTimeLineIndicator(mousePoint){
         if(mousePoint&&((mousePoint.x-globalVar.leftTitleWidth)<0||(mousePoint.x>WINDOW_WIDTH-20))){
           return;
@@ -297,6 +322,7 @@ angular.
         }
       }
 
+      // 开始画画
       function startDraw(){
         drawTimeLine({
           canvasContext: 'time-line-canvas'
@@ -305,6 +331,7 @@ angular.
         drawContent();
       }
 
+      // 获取两个日期的总月数
       function getTotalMonth(startTime, endTime){
         var startYear = parseInt(startTime.split('-')[0]),
           startMonth = parseInt(startTime.split('-')[1]),
@@ -314,6 +341,7 @@ angular.
         return endYear*12+endMonth-startYear*12-startMonth;
       }
 
+      // 获取两个日期的总天数
       function getTotalDay(startTime, endTime){
         var dateArray, startDate, endDate, totalDay;
 
@@ -326,10 +354,12 @@ angular.
         return totalDay;
       }
 
+      // 获取两日期的总小时数
       function getTotalHour(startTime,  endTime){
         return 24*getTotalDay(startTime,  endTime);
       }
 
+      // 计算一个日期加上天数后的新日期
       function addDate(date,days){
         var d = new Date(date);
         d.setDate(d.getDate()+days);
@@ -337,20 +367,24 @@ angular.
         return d.getFullYear()+'-'+m+'-'+d.getDate();
       }
 
+      // 计算两日期的月份差
       function differMonth(startTime, endTime){
         var startTotalMonth = parseInt(startTime.split('-')[0]*12)+parseInt(startTime.split('-')[1]);
         var endTotalMonth = parseInt(endTime.split('-')[0])*12+parseInt(endTime.split('-')[1]);
         return (endTotalMonth-startTotalMonth);
       }
-
+      
+      // 计算两日期的天数差
       function differDay(startTime, endTime){
         return ((new Date(endTime))-(new Date(startTime)))/1000/3600/24;
       }
 
+      // 计算两日期小时差
       function differHour(startTime, endTime){
         return ((new Date(endTime))-(new Date(startTime)))/1000/3600;
       }
-
+      
+      // 将16进制的颜色值转为rgba（r, g, b, a）的值
       function brgba(hex, opacity) {
         if( ! /#?\d+/g.test(hex) ) return hex;
         var h = hex.charAt(0) == "#" ? hex.substring(1) : hex,
@@ -360,11 +394,13 @@ angular.
             a = opacity;
         return "rgba(" + r + "," + g + "," + b + "," + a + ")";
       }
-
+      
+      // 时间格式化
       function formatDate(date){
         return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDay();
       }
 
+      // 画药物治疗网格
       function drawItemContentGrid(options){
         var offsetLineBar = getOffsetLineBar();
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
@@ -455,6 +491,7 @@ angular.
         }
       }
 
+      // 画药物治疗标题
       function drawItemTitle(options){
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
         var perLineHeight = options.perLineHeight||30;
@@ -485,7 +522,8 @@ angular.
           canvasContext.fillText(options.items[i].itemTitle, fontStartPosition, perLineHeight*(i+1)-perLineHeight*0.3);
         }
       }
-
+      
+      // 获取总共有多少条时间线
       function getTotalLineBar(){
         var totalLineBar = 0;
 
@@ -502,14 +540,17 @@ angular.
         return totalLineBar+1;
       }
 
+      // 计算时间线长度
       function getTimeLineLength(){
         return (getTotalLineBar()-1)*globalVar.horizontalDistance;
       }
 
+      // 计算内容画布长度
       function contentCanvasLength(){
         return (WINDOW_WIDTH - globalVar.leftTitleWidth);
       }
 
+      // 计算时间轴上向左偏移的时间条数
       function getOffsetLineBar(){
         var offsetLineBar = 0;
         var offsetDistance = getOffsetDistance();
@@ -521,14 +562,17 @@ angular.
         return offsetLineBar;
       }
 
+      // 计算第一条时间线偏移的距离
       function getOffsetDistance(){
         return (getTimeLineLength() - contentCanvasLength())*globalVar.timeOffsetPercentage;
       }
 
+      // 获取总的时间条数
       function getTotalTimeLine(){
         return parseInt((WINDOW_WIDTH - globalVar.leftTitleWidth)/globalVar.horizontalDistance)+1;
       }
 
+      // 画时间背景
       function drawTimeLineBg(){
         var totalTimeLine = getTotalTimeLine();
         var timeLineBgCanvas = document.getElementById("time-line-canvas-bg").getContext('2d');
@@ -544,6 +588,7 @@ angular.
         }
       }
 
+      // 画时间线条
       function drawTimeLine(options){
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
         var canvasLength = WINDOW_WIDTH - globalVar.leftTitleWidth;
@@ -595,6 +640,7 @@ angular.
         });
       }
 
+      // 画药物治疗内容
       function updateContentCanvas(options){
         for (var i = 0; i < medicationsCollection.length; i++) {
           for (var j = 0; j < medicationsCollection[i].drugs.length; j++) {
@@ -628,6 +674,7 @@ angular.
         });
       }
 
+      // 画时间轴上显示的日期（以月为单位显示）
       function drawTimeLineByMonth(options){
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
         var startTime = globalVar.startTime.split('-'),
@@ -666,6 +713,7 @@ angular.
         }
       }
 
+      // 画时间轴上的日期（以天为单位显示）
       function drawTimeLineByDay(options){
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
 
@@ -697,6 +745,7 @@ angular.
         }
       }
 
+      // 画时间轴上的数字（以小时为单位显示）
       function drawTimeLineByHour(options){
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
         var offsetLineBar = getOffsetLineBar();
@@ -731,6 +780,7 @@ angular.
         }
       }
 
+      // 画矩形
       function drawRectanglePoint(options){
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
 
@@ -741,6 +791,7 @@ angular.
         canvasContext.strokeRect(options.centerPointX-parseInt(options.rectangleLength/2), options.centerPointY-parseInt(options.rectangleLength/2), options.rectangleLength, options.rectangleLength);
       }
 
+      // 画圆点
       function drawCirclePoint(options){
         var canvasContext = configCanvas(options);
 
@@ -752,6 +803,7 @@ angular.
         drawMinus(options);
       }
 
+      // 画加号
       function drawPlusSymbol(options){
         var canvasContext = configCanvas(options);
         canvasContext.moveTo(options.centerPointX-options.radius, options.centerPointY);
@@ -762,6 +814,7 @@ angular.
         canvasContext.stroke();
       }
 
+      // 画减号
       function drawMinus(options){
         var canvasContext = configCanvas(options);
         canvasContext.moveTo(options.centerPointX-options.radius, options.centerPointY);
@@ -769,6 +822,7 @@ angular.
         canvasContext.stroke();
       }
 
+      // 获取canvas对象
       function configCanvas(options){
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
 
@@ -778,6 +832,7 @@ angular.
         return canvasContext;
       }
 
+      // 画线条
       function drawLine(options){
         var canvasContext = configCanvas(options);
         canvasContext.moveTo(options.startPointX, options.startPointY);
