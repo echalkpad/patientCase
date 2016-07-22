@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <div class="row" auto-height style="position: relative; overflow: auto;">
+  <div class="row" auto-height style="position: relative; overflow: auto;" id="data_show">
     <div style="position: absolute; left: 0; right: 0;">
       <canvas id="time-line-canvas-bg" width="1000" height="600">
         your browser not support canvas, please upgrade your browser.
@@ -74,7 +74,7 @@
         </ul>
       </dt>
       <dd ng-show="$ctrl.vitalSignVisible">
-        <p>检查项目三显示区域。</p>
+        <div id="vitalSign" style="height:300px;overflow:auto;"></div>
       </dd>
 
       <dt href="javascript:void(null)">
@@ -83,7 +83,7 @@
         </ul>
       </dt>
       <dd ng-show="$ctrl.laboratoryVisible">
-        <p>检查项目三显示区域。</p>
+        <div id="laboratory" style="height:300px;overflow:auto;"></div>
       </dd>
 
       <dt href="javascript:void(null)">
