@@ -361,6 +361,10 @@ angular.
         return "rgba(" + r + "," + g + "," + b + "," + a + ")";
       }
 
+      function formatDate(date){
+        return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDay();
+      }
+
       function drawItemContentGrid(options){
         var offsetLineBar = getOffsetLineBar();
         var canvasContext = document.getElementById(options.canvasContext).getContext('2d');
@@ -581,7 +585,6 @@ angular.
       function drawContent(){
         updateContentCanvas();
         //绘生命体征部分
-        return;
         vitalSign.initialize({
           startTime: globalVar.startTime,
           endTime: globalVar.endTime,
